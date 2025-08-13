@@ -22,8 +22,16 @@ module WorkShop =
           Credit: decimal }
 
     let getPurchases customer =
-        let purchases = if customer.Id % 2 = 0 then 120M else 50M
-        customer, purchases
+        try
+            let purchases =
+                if customer.Id % 2 = 0 then
+                    (customer, 120M)
+                else
+                    (customer, 80M)
+
+            Ok purchases
+        with ex ->
+            Error ex
 
     let tryPromoteToVip purchases =
         let customer, amount = purchases
@@ -34,15 +42,23 @@ module WorkShop =
             customer
 
     let increaseCreditIfVip customer =
-        let increase = if customer.IsVip then 100M else 0M
+        try
+            let increase = if customer.IsVip then 100M else 0M
 
-        { customer with
-            Credit = customer.Credit + increase }
+            Ok
+                { customer with
+                    Credit = customer.Credit + increase }
+        with ex ->
+            Error ex
 
-    let upgradeCustomerComposed = getPurchases >> tryPromoteToVip >> increaseCreditIfVip
+    let upgradeCustomerComposed =
+        getPurchases >> Result.map tryPromoteToVip >> Result.bind increaseCreditIfVip
 
     let upgradeCustomerPiped customer =
-        customer |> getPurchases |> tryPromoteToVip |> increaseCreditIfVip
+        customer
+        |> getPurchases
+        |> Result.map tryPromoteToVip
+        |> Result.bind increaseCreditIfVip
 
 module Fun =
     open System
