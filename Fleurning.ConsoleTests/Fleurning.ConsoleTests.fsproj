@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="OrderTests.fs" />
         <Compile Include="CustomerTests.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>
@@ -20,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Fleurning.Console\Fleurning.Console.fsproj" />
+      <ProjectReference Include="..\Fleurning.Orders\Fleurning.Orders.fsproj" />
     </ItemGroup>
 
 </Project>

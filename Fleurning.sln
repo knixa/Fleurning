@@ -4,6 +4,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fleurning.Console", "Fleurn
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fleurning.ConsoleTests", "Fleurning.ConsoleTests\Fleurning.ConsoleTests.fsproj", "{7FD340B3-49B9-4DCA-BFFC-E3F46E0EEB2C}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fleurning.Orders", "Fleurning.Orders\Fleurning.Orders.fsproj", "{D647BF5B-7E55-41C4-82A2-B46D53C3AC78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{7FD340B3-49B9-4DCA-BFFC-E3F46E0EEB2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FD340B3-49B9-4DCA-BFFC-E3F46E0EEB2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FD340B3-49B9-4DCA-BFFC-E3F46E0EEB2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D647BF5B-7E55-41C4-82A2-B46D53C3AC78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D647BF5B-7E55-41C4-82A2-B46D53C3AC78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D647BF5B-7E55-41C4-82A2-B46D53C3AC78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D647BF5B-7E55-41C4-82A2-B46D53C3AC78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
