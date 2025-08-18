@@ -21,3 +21,23 @@ module Domain =
     let addItems newItems order =
         let items = newItems @ order.Items |> recalculate
         { order with Items = items }
+
+    let removeProduct productId order =
+        let items =
+            order.Items
+            |> List.filter (fun x -> x.ProductId <> productId)
+            |> List.sortBy (fun x -> x.ProductId)
+
+        { order with Items = items }
+
+    let reduceItem productId quantity order =
+        let items =
+            { ProductId = productId
+              Quantity = -quantity }
+            :: order.Items
+            |> recalculate
+            |> List.filter (fun x -> x.Quantity > 0)
+
+        { order with Items = items }
+
+    let clearItems order = { order with Items = [] }
