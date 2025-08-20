@@ -8,6 +8,8 @@ type Customer =
       DateRegistered: string
       Discount: string }
 
+type DataReader = string -> Result<string seq, exn>
+
 let parseLine (line: string) : Customer option =
     match line.Split("|") with
     | [| customerId; email; eligible; registered; dateRegistered; discount |] ->
@@ -21,20 +23,24 @@ let parseLine (line: string) : Customer option =
     | _ -> None
 
 let parse (data: string seq) =
-    data
-    |> Seq.skip 1
-    |> Seq.map parseLine
-    |> Seq.choose id
+    data |> Seq.skip 1 |> Seq.map parseLine |> Seq.choose id
 
-let readFile path =
-    try
-        File.ReadLines(path) |> Ok
-    with ex ->
-        Error ex
+let readFile: DataReader =
+    fun path ->
+        try
+            File.ReadLines(path) |> Ok
+        with ex ->
+            Error ex
 
-let import path =
-    match path |> readFile with
-    | Ok data -> data |> parse |> Seq.iter (fun x -> printfn $"%A{x}")
+let output data =
+    data |> Seq.iter (fun x -> printfn $"%A{x}")
+
+let import (dataReader: DataReader) path =
+    match path |> dataReader with
+    | Ok data -> data |> parse |> output
     | Error ex -> printfn $"Error: %A{ex.Message}"
 
-Path.Combine(__SOURCE_DIRECTORY__, "Resources", "customers.csv") |> import
+let importWithFileReader = import readFile
+
+Path.Combine(__SOURCE_DIRECTORY__, "Resources", "customers.csv")
+|> importWithFileReader
