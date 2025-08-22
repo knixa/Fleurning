@@ -8,6 +8,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fleurning.Orders", "Fleurni
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FileIO", "FileIO\FileIO.fsproj", "{37A06F41-B07B-408A-8ABA-662F26D46070}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fleurning.Validation", "Fleurning.Validation\Fleurning.Validation.fsproj", "{42BDC2A8-6566-46AE-AFAB-BE2EC5C233A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{37A06F41-B07B-408A-8ABA-662F26D46070}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37A06F41-B07B-408A-8ABA-662F26D46070}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37A06F41-B07B-408A-8ABA-662F26D46070}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42BDC2A8-6566-46AE-AFAB-BE2EC5C233A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42BDC2A8-6566-46AE-AFAB-BE2EC5C233A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42BDC2A8-6566-46AE-AFAB-BE2EC5C233A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42BDC2A8-6566-46AE-AFAB-BE2EC5C233A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
