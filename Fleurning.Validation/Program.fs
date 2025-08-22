@@ -2,6 +2,7 @@
 open System.Globalization
 open System.IO
 open System.Text.RegularExpressions
+open FsToolkit.ErrorHandling.ValidationCE
 
 type Customer =
     { CustomerId: string
@@ -58,7 +59,7 @@ let (|IsEmptyString|_|) (input: string) =
     if input.Trim() = "" then Some() else None
 
 let (|IsDecimal|_|) (input: string) =
-    let success, value = Decimal.TryParse(input, CultureInfo.InvariantCulture) 
+    let success, value = Decimal.TryParse(input, CultureInfo.InvariantCulture)
     if success then Some value else None
 
 let (|IsBoolean|_|) (input: string) =
@@ -108,34 +109,16 @@ let validateDiscount discount =
     | _ -> Error(InvalidData("Discount", discount))
 
 let validate (input: Customer) : Result<ValidatedCustomer, ValidationError list> =
-    let customerId = input.CustomerId |> validateCustomerId
-    let email = input.Email |> validateEmail
-    let isEligible = input.IsEligible |> validateIsEligible
-    let isRegistered = input.IsRegistered |> validateIsRegistered
-    let dateRegistered = input.DateRegistered |> validateDateRegistered
-    let discount = input.Discount |> validateDiscount
+    validation {
+        let! customerId = input.CustomerId |> validateCustomerId |> Result.mapError List.singleton
+        and! email = input.Email |> validateEmail |> Result.mapError List.singleton
+        and! isEligible = input.IsEligible |> validateIsEligible |> Result.mapError List.singleton
+        and! isRegistered = input.IsRegistered |> validateIsRegistered |> Result.mapError List.singleton
+        and! dateRegistered = input.DateRegistered |> validateDateRegistered |> Result.mapError List.singleton
+        and! discount = input.Discount |> validateDiscount |> Result.mapError List.singleton
+        return create customerId email isEligible isRegistered dateRegistered discount
+    }
 
-    let errors =
-        [ customerId |> getError
-          email |> getError
-          isEligible |> getError
-          isRegistered |> getError
-          dateRegistered |> getError
-          discount |> getError ]
-        |> List.concat
-
-    match errors with
-    | [] ->
-        Ok(
-            create
-                (customerId |> getValue)
-                (email |> getValue)
-                (isEligible |> getValue)
-                (isRegistered |> getValue)
-                (dateRegistered |> getValue)
-                (discount |> getValue)
-        )
-    | _ -> Error errors
 
 
 
@@ -148,7 +131,7 @@ let readFile: DataReader =
                 use reader = new StreamReader(File.OpenRead(path))
 
                 while not reader.EndOfStream do
-                   yield reader.ReadLine()
+                    yield reader.ReadLine()
             }
             |> Ok
 

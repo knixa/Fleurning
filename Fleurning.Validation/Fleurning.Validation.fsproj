@@ -10,4 +10,8 @@
         <Content Include="Resources\customers.csv" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FsToolkit.ErrorHandling" Version="5.0.1" />
+    </ItemGroup>
+
 </Project>
