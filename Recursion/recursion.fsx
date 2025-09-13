@@ -29,3 +29,26 @@ let fib (n: int64) =
         | n -> loop (n - 1L) (b, a + b)
 
     loop n (0L, 1L)
+
+let mapping = [(3, "Fizz"); (5, "Buzz"); (7,"Bazz")]
+
+let fizzBuzzRec initialMapping n =
+    let rec loop mapping acc =
+        match mapping with
+        | [] -> if acc = "" then string n else acc
+        | head::tail ->
+            let value =
+                head |> (fun(div, msg) -> if n % div = 0 then msg else "")
+            loop tail (acc + value)
+    loop initialMapping ""
+       
+[1 .. 25]
+|> List.map (fizzBuzzRec mapping)
+|> List.iter (printfn "%s")
+
+let fizzBuzzfold n =
+    [(3,"Fizz"); (5, "Buzz")]
+    |> List.fold (fun acc (div, msg) ->
+        match (if n % div = 0 then msg else "") with
+        | "" -> acc
+        | s -> if acc = string n then s else acc + s)(string n)
