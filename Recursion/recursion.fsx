@@ -30,25 +30,35 @@ let fib (n: int64) =
 
     loop n (0L, 1L)
 
-let mapping = [(3, "Fizz"); (5, "Buzz"); (7,"Bazz")]
+let mapping = [ (3, "Fizz"); (5, "Buzz"); (7, "Bazz") ]
 
 let fizzBuzzRec initialMapping n =
     let rec loop mapping acc =
         match mapping with
         | [] -> if acc = "" then string n else acc
-        | head::tail ->
-            let value =
-                head |> (fun(div, msg) -> if n % div = 0 then msg else "")
+        | head :: tail ->
+            let value = head |> (fun (div, msg) -> if n % div = 0 then msg else "")
             loop tail (acc + value)
+
     loop initialMapping ""
-       
-[1 .. 25]
-|> List.map (fizzBuzzRec mapping)
-|> List.iter (printfn "%s")
+
+[ 1..25 ] |> List.map (fizzBuzzRec mapping) |> List.iter (printfn "%s")
 
 let fizzBuzzfold n =
-    [(3,"Fizz"); (5, "Buzz")]
-    |> List.fold (fun acc (div, msg) ->
-        match (if n % div = 0 then msg else "") with
-        | "" -> acc
-        | s -> if acc = string n then s else acc + s)(string n)
+    [ (3, "Fizz"); (5, "Buzz") ]
+    |> List.fold
+        (fun acc (div, msg) ->
+            match (if n % div = 0 then msg else "") with
+            | "" -> acc
+            | s -> if acc = string n then s else acc + s)
+        (string n)
+
+
+let rec qsort input =
+    match input with
+    | [] -> []
+    | head :: tail ->
+        let smaller, larger = List.partition (fun n -> head >= n) tail
+        List.concat [ qsort smaller; [ head ]; qsort larger ]
+
+[ 5; 9; 5; 2; 1; 2; 4; 1; 5 ] |> qsort |> printf "%A"
