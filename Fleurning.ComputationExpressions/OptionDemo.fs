@@ -1,4 +1,4 @@
-﻿namespace ComputationExpression
+﻿namespace ComputationExpressions
 
 [<AutoOpen>]
 module Option =
