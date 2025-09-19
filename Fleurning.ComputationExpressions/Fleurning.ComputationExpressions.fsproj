@@ -10,6 +10,7 @@
         <Compile Include="OptionDemo.fs"/>
         <Compile Include="ResultDemo.fs" />
         <Compile Include="AsyncDemo.fs" />
+        <Compile Include="AsyncResultDemo.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>
 
