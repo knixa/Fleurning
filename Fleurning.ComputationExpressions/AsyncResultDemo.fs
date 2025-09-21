@@ -46,7 +46,6 @@ module AsyncResultDemo =
     [<Literal>]
     let AuthErrorMessage = "Earth's core stopped spinning"
 
-
     let tryGetUser username =
         async {
             let user =
@@ -61,4 +60,31 @@ module AsyncResultDemo =
                 | BannedUser -> Some { user with Status = Banned }
                 | BadLuckUser -> Some user
                 | _ -> None
+        }
+
+    let isPwdValid password user = password = user.Password
+
+    let authorize user =
+        async {
+            return
+                match user.Status with
+                | Active -> Ok()
+                | _ -> UserBannedOrSuspended |> Error
+        }
+
+    let createAuthToken user =
+        try
+            if user.Name = BadLuckUser then
+                failwith AuthErrorMessage
+            else
+                Guid.NewGuid() |> AuthToken |> Ok
+        with ex ->
+            ex.Message |> BadThingHappened |> Error
+
+    let login username password : Async<Result<AuthToken, LoginError>> =
+        asyncResult {
+            let! user = username |> tryGetUser |> AsyncResult.requireSome InvalidUser
+            do! user |> isPwdValid password |> Result.requireTrue InvalidPwd
+            do! user |> authorize |> AsyncResult.mapError Unauthorized
+            return! user |> createAuthToken |> Result.mapError TokenErr
         }
