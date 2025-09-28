@@ -1,7 +1,8 @@
-open System
 open Giraffe
 open Giraffe.EndpointRouting
 open Giraffe.ViewEngine
+open GiraffeExample
+open GiraffeExample.TodoStore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.DependencyInjection
@@ -24,8 +25,11 @@ let apiRoutes =
           [ route "" (json {| Response = "Hello World!!" |})
             routef "%s" sayHelloNameHandler ] ]
 
+
 let endpoints =
-    [ GET [ route "/" (htmlView indexView) ]; subRoute "/api" apiRoutes ]
+    [ GET [ route "/" (htmlView indexView) ]
+      subRoute "/api" apiRoutes
+      subRoute "/api/todo" Todos.apiTodoRoutes ]
 
 let notFoundHandler = "Not Found" |> text |> RequestErrors.notFound
 
@@ -33,7 +37,8 @@ let configureApp (appBuilder: IApplicationBuilder) =
     appBuilder.UseRouting().UseGiraffe(endpoints).UseGiraffe(notFoundHandler)
 
 let configureServices (services: IServiceCollection) =
-    services.AddRouting().AddGiraffe() |> ignore
+    services.AddRouting().AddGiraffe().AddSingleton<TodoStore>(TodoStore())
+    |> ignore
 
 [<EntryPoint>]
 let main args =
